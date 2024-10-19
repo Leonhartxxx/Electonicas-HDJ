@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 -- Base de datos: `tienda_electronica`
 --
 
--- --------------------------------------------------------
+-- -------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `cache`
@@ -45,7 +45,7 @@ CREATE TABLE `cache_locks` (
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+-- ---------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `failed_jobs`
