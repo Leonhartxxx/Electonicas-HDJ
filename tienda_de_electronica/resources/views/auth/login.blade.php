@@ -1,45 +1,56 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+            <a href="{{ route('welcome') }}"><img src="{{ asset('images/logo.png') }}" alt="Logo Electronica HDJ" class="h-20 block w-auto"></a>
         </x-slot>
 
         <x-validation-errors class="mb-4" />
 
-        @session('status')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
+        @if(session('status'))
+            <div class="mb-4 text-green-600 text-center font-medium text-sm">
+                {{ session('status') }}
             </div>
-        @endsession
+        @endif
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login') }}" class="space-y-6">
             @csrf
 
+            <!-- Email Field -->
             <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                <x-label for="email" value="{{ __('Email') }}" class="text-gray-700 font-semibold" />
+                <x-input id="email" type="email" name="email" :value="old('email')" required autofocus 
+                         class="block w-full mt-1 p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
             </div>
 
+            <!-- Password Field -->
             <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <x-label for="password" value="{{ __('Password') }}" class="text-gray-700 font-semibold" />
+                <x-input id="password" type="password" name="password" required 
+                         class="block w-full mt-1 p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" />
             </div>
 
+            <!-- Remember Me Checkbox -->
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                    <x-checkbox id="remember_me" name="remember" class="text-indigo-600 focus:ring-indigo-500" />
+                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
+            <!-- Actions -->
+            <div class="flex items-center justify-between mt-6">
+                <div class="flex items-center space-x-4">
+                    @if (Route::has('password.request'))
+                        <a class="text-sm text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                            {{ __('Forgot your password?') }}
+                        </a>
+                    @endif
+                    <a class="text-sm text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
+                        {{ __('Registrate') }}
                     </a>
-                @endif
+                </div>
 
-                <x-button class="ms-4">
+                <x-button class="ms-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     {{ __('Log in') }}
                 </x-button>
             </div>

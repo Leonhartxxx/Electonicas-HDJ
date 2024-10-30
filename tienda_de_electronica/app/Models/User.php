@@ -2,19 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
+use App\Models\Estado;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
@@ -29,6 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id_rol',
+        'id_estado',
     ];
 
     /**
@@ -63,5 +64,31 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+        
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            // Obtener el rol 'user' desde la base de datos
+            $userRole = Role::where('rol', 'user')->first();
+
+            // Asignar el rol 'user' al nuevo usuario
+            $user->id_rol = $userRole->id_rol;
+
+            // Obtener el estado 'activo' desde la base de datos
+            $estadoActivo = Estado::where('estado', 'activo')->first();
+            // Asignar el estado 'activo' al nuevo usuario
+            $user->id_estado = $estadoActivo->id_estado;
+        });
+    }
+
+    /**
+     * Define la relación entre usuario y rol.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'id_rol');
     }
 }
